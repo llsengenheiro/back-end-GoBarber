@@ -34,7 +34,7 @@ class AppointmentController {
         }
       ]
     });
-    console.log(req.userId);
+
     return res.json(appointments);
   }
 
@@ -143,9 +143,7 @@ class AppointmentController {
     }
 
     appointment.canceled_at = new Date();
-
     await appointment.save();
-
     try {
       await Mail.sendMail({
         to: `${appointment.provider.name} <${appointment.provider.email}`,
@@ -162,6 +160,7 @@ class AppointmentController {
     } catch (e) {
       console.log(e);
     }
+
     return res.json(appointment);
   }
 }
