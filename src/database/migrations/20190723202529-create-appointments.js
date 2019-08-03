@@ -40,6 +40,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('file');
+    return queryInterface.dropTable('appointments');
   }
 };
