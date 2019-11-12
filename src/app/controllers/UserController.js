@@ -1,6 +1,7 @@
 import * as Yup from 'yup'; // utilizado quando a lib não exporta nenhuma arquivo coloca-se o * as para estanciar em uma variável
 
 import User from '../models/User';
+import File from '../models/File';
 
 class UserController {
   async store(req, res) {
@@ -64,13 +65,22 @@ class UserController {
       return res.status(401).json({ error: 'Password does not match' });
     }
 
-    const { id, name, provaider } = await user.update(req.body);
+    await user.update(req.body);
 
+    const { id, name, avatar } = await User.findByPk(req.userId, {
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['id', 'path', 'url']
+        }
+      ]
+    });
     return res.json({
       id,
       name,
       email,
-      provaider
+      avatar
     });
   }
 }
